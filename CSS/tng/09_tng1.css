@@ -1,0 +1,36 @@
+body {
+    background-color: #000;
+}
+
+.container {
+    width: 500px;
+    height: 700px;
+    margin: auto;
+    padding: 30px 15px;
+    border: 1px dotted #000;
+    background-color: #fff;
+    background-image: url('../img/meerkat.webp');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+
+h1 {
+    background-color: darkcyan;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+h2 {
+    text-align: center;
+    margin: 40px;
+}
+
+h3 { 
+    color: #ff3000;
+}
+
+ul {
+    list-style-type: none;
+    line-height: 2rem;
+}
