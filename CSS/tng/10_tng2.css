@@ -1,0 +1,45 @@
+fieldset {
+    background-image: url('../img/icon_moon.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+}
+
+legend {
+    color: magenta;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.label-required::before {
+    content: '*';
+    color: #ff3000;
+}
+
+input, textarea {
+    background-color: transparent;
+}
+
+input:focus, textarea:focus {
+    border: 3px solid #ff3000;
+    outline: none;
+}
+
+.radio-gender:checked + label {
+    color: #ff3000;
+}
+
+#memo {
+    vertical-align: top;
+}
+
+.hide {
+    display: none;
+    margin: 0;
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-send:hover + .hide {
+    display: inline-block;
+}
