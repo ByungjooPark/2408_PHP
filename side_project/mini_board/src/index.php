@@ -39,7 +39,8 @@ try {
 
     $result = my_board_select_pagination($conn, $arr_prepare);
 } catch(Throwable $th) {
-    echo $th->getMessage();
+    require_once(MY_PATH_ERROR);
+    exit;
 }
 
 ?>
@@ -54,12 +55,13 @@ try {
     <title>리스트 페이지</title>
 </head>
 <body>
-    <header>
-        <h1>mini Board</h1>
-    </header>
+    <?php
+    require_once(MY_PATH_ROOT."header.php");
+    ?>
+
     <main>
         <div class="main-top">
-            <a href="./insert.html">
+            <a href="/insert.php">
                 <button class="btn-middle">글 작성</button>
             </a>
         </div>
@@ -72,7 +74,7 @@ try {
             <?php foreach($result as $item) { ?>
             <div class="item list-content">
                 <div><?php echo $item["id"] ?></div>
-                <div><a href="./detail.html"><?php echo $item["title"] ?></a></div>
+                <div><a href="/detail.php?id=<?php echo $item["id"] ?>&page=<?php echo $page ?>"><?php echo $item["title"] ?></a></div>
                 <div><?php echo $item["created_at"] ?></div>
             </div>
             <?php } ?>
