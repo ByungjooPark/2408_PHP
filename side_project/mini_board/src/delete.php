@@ -25,7 +25,7 @@ try {
         ];
 
         // 데이터 조회
-        $result = my_board_select_id($conn, $arr_prepare);
+        $result = my_boards_select_id($conn, $arr_prepare);
     } else {
         // POST 처리
         // ---------------
@@ -47,7 +47,7 @@ try {
         ];
 
         // 삭제 처리
-        my_board_delete_id($conn, $arr_prepare);
+        my_boards_delete_id($conn, $arr_prepare);
 
         // commit
         $conn->commit();
@@ -79,7 +79,7 @@ try {
 </head>
 <body>
     <?php
-    require_once(MY_PATH_ROOT."header.php");
+    require_once(MY_PATH_HEADER);
     ?>
     <main>
         <div class="main-header">

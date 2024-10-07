@@ -20,7 +20,7 @@ if(strtoupper($_SERVER["REQUEST_METHOD"]) === "POST") {
 
         // begin transaction
         $conn->beginTransaction();
-        my_board_insert($conn, $arr_prepare);
+        my_boards_insert($conn, $arr_prepare);
 
         $conn->commit();
 
@@ -42,13 +42,13 @@ if(strtoupper($_SERVER["REQUEST_METHOD"]) === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/common.css">
-    <link rel="stylesheet" href="./css/insert.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/insert.css">
     <title>작성 페이지</title>
 </head>
 <body>
     <?php
-    require_once(MY_PATH_ROOT."header.php");
+    require_once(MY_PATH_HEADER);
     ?>
     
     <main>

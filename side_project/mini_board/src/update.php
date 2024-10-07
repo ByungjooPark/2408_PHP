@@ -28,7 +28,7 @@ try {
             "id" => $id
         ];
 
-        $result = my_board_select_id($conn, $arr_prepare);
+        $result = my_boards_select_id($conn, $arr_prepare);
 
     } else {
         // POST 처리
@@ -44,6 +44,8 @@ try {
         $title = isset($_POST["title"]) ? $_POST["title"] : "";
         //content 획득
         $content = isset($_POST["content"]) ? $_POST["content"] : "";
+        // file 획득
+        $file = $_FILES["file"];
 
         if($id < 1 || $title === "") {
             throw new Exception("파라미터 오류");
@@ -61,7 +63,29 @@ try {
             ,"content" => $content
         ];
         
-        my_board_update($conn, $arr_prepare);
+        // file 저장 처리
+        if($file["name"] !== "") {
+            // 기존 파일 삭제
+            $arr_prepare_select = [
+                "id" => $id
+            ];
+            $result = my_boards_select_id($conn, $arr_prepare_select);
+            if(!is_null($result["img"])) {
+                unlink(MY_PATH_ROOT.$result["img"]);
+            }
+
+            // 새 파일 저장
+            $type = explode("/", $file["type"]);
+            $extension = $type[1];
+            $file_name = uniqid().".".$extension;
+            $file_path = "/img/".$file_name;
+            
+            move_uploaded_file($file["tmp_name"], MY_PATH_ROOT.$file_path); // 파일 저장
+
+            $arr_prepare["img"] = $file_path;
+        }
+
+        my_boards_update($conn, $arr_prepare);
 
         // commit
         $conn->commit();
@@ -92,10 +116,10 @@ try {
 </head>
 <body>
     <?php
-    require_once(MY_PATH_ROOT."header.php");
+    require_once(MY_PATH_HEADER);
     ?>
     <main>
-        <form action="/update.php" method="post">
+        <form action="/update.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo $result["id"] ?>">
             <input type="hidden" name="page" value="<?php echo $page ?>">
 
@@ -113,6 +137,12 @@ try {
                 <div class="box-title">내용</div>
                 <div class="box-content">
                     <textarea name="content" id="content"><?php echo $result["content"] ?></textarea>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-title">이미지</div>
+                <div class="box-content">
+                    <input type="file" name="file" id="file">
                 </div>
             </div>
             <div class="main-footer">

@@ -12,15 +12,15 @@ function my_db_conn() {
 }
 
 /**
- * board select 페이지네이션
+ * boards select 페이지네이션
  */
-function my_board_select_pagination(PDO $conn, array $arr_param) {
+function my_boards_select_pagination(PDO $conn, array $arr_param) {
     // SQL
     $sql = 
         " SELECT "
         ."      * "
         ." FROM "
-        ."      board "
+        ."      boards "
         ." WHERE "
         ."      deleted_at IS NULL "
         ." ORDER BY "
@@ -40,14 +40,14 @@ function my_board_select_pagination(PDO $conn, array $arr_param) {
 }
 
 /**
- * board 테이블 유효 게시글 총 수 획득
+ * boards 테이블 유효 게시글 총 수 획득
  */
-function my_board_total_count(PDO $conn) {
+function my_boards_total_count(PDO $conn) {
     $sql =
         " SELECT "
         ."      COUNT(*) cnt "
         ." FROM "
-        ."      board "
+        ."      boards "
         ." WHERE "
         ."      deleted_at IS NULL "
     ;
@@ -59,11 +59,11 @@ function my_board_total_count(PDO $conn) {
 }
 
 /**
- * board 테이블 insert 처리
+ * boards 테이블 insert 처리
  */
-function my_board_insert(PDO $conn, array $arr_param) {
+function my_boards_insert(PDO $conn, array $arr_param) {
     $sql =
-        " INSERT INTO board ( "
+        " INSERT INTO boards ( "
         ."      title "
         ."      ,content "
         ." ) "
@@ -92,12 +92,12 @@ function my_board_insert(PDO $conn, array $arr_param) {
 /**
  * id로 게시글 조회
  */
-function my_board_select_id(PDO $conn, array $arr_param) {
+function my_boards_select_id(PDO $conn, array $arr_param) {
     $sql =
         " SELECT "
         ."      * "
         ." FROM "
-        ."      board "
+        ."      boards "
         ." WHERE "
         ."      id = :id "
     ;
@@ -113,15 +113,16 @@ function my_board_select_id(PDO $conn, array $arr_param) {
 }
 
 /**
- * board 테이블 update
+ * boards 테이블 update
  */
-function my_board_update(PDO $conn, array $arr_param) {
+function my_boards_update(PDO $conn, array $arr_param) {
     $sql =
-        " UPDATE board "
+        " UPDATE boards "
         ." SET "
         ."      title = :title "
         ."      ,content = :content "
         ."      ,updated_at = NOW() "
+        .(isset($arr_param["img"]) ? "      ,img = :img" : "")
         ." WHERE "
         ."      id = :id "
     ;
@@ -142,11 +143,11 @@ function my_board_update(PDO $conn, array $arr_param) {
 
 
 /**
- * board 테이블 레코드 삭제
+ * boards 테이블 레코드 삭제
  */
-function my_board_delete_id(PDO $conn, array $arr_param) {
+function my_boards_delete_id(PDO $conn, array $arr_param) {
     $sql =
-        " UPDATE board "
+        " UPDATE boards "
         ." SET "
         ."      updated_at = NOW() "
         ."      ,deleted_at = NOW() "

@@ -3,7 +3,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/config.php");
 require_once(MY_PATH_DB_LIB);
 
 $conn = null;
-$max_board_cnt = 0;
+$max_boards_cnt = 0;
 $max_page = 0;
 
 try {
@@ -13,8 +13,8 @@ try {
     // -----------------------
     // max page 획득 처리
     // -----------------------
-    $max_board_cnt = my_board_total_count($conn); // 게시글 총 수 획득
-    $max_page = (int)ceil($max_board_cnt / MY_LIST_COUNT); // max page 획득
+    $max_boards_cnt = my_boards_total_count($conn); // 게시글 총 수 획득
+    $max_page = (int)ceil($max_boards_cnt / MY_LIST_COUNT); // max page 획득
 
     // ------------------------
     // pagination 설정 처리
@@ -37,7 +37,7 @@ try {
         ,"offset"   => $offset
     ];
 
-    $result = my_board_select_pagination($conn, $arr_prepare);
+    $result = my_boards_select_pagination($conn, $arr_prepare);
 } catch(Throwable $th) {
     require_once(MY_PATH_ERROR);
     exit;
@@ -56,7 +56,7 @@ try {
 </head>
 <body>
     <?php
-    require_once(MY_PATH_ROOT."header.php");
+    require_once(MY_PATH_HEADER);
     ?>
 
     <main>
@@ -91,44 +91,5 @@ try {
             <?php } ?>
         </div>
     </main>
-
-    <div class="snowflakes" aria-hidden="true">
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-        <div class="snowflake">
-          <div class="inner">❅</div>
-        </div>
-    </div>
 </body>
 </html>
