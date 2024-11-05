@@ -2,12 +2,24 @@
 
 namespace Controllers;
 
+use Models\BoardsCategory;
+
 class Controller {
+    protected $arrErrorMsg = []; // 화면에 표시할 에러 메세지 리스트
+    protected $arrBoardNameInfo = []; // 헤더 게시판드롭다운 리스트
+
     // 생성자
     public function __construct(string $action) {
         // 세션 시작
+        if(session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         // 유저 로그인 및 권한체크
+
+        // 헤더 드롭다운 리스트 획득
+        $boardsCategoryModel = new BoardsCategory();
+        $this->arrBoardNameInfo = $boardsCategoryModel->getBoardsNameList();
 
         // 해당 Action 호출
         $resultAction = $this->$action();
