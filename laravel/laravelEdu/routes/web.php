@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\QueryController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -151,3 +154,74 @@ Route::prefix('/users')->group(function() {
         return 'DELETE : /users';
     });
 });
+
+
+// ---------------------
+// 컨트롤러 연결
+// ---------------------
+// 커맨드로 컨트롤러 생성 : php artisan make:controller 컨트롤러명
+Route::get('/test', [TestController::class, 'index']);
+
+// Route::get('/task', [TaskController::class, 'index']);
+// Route::get('/task/create', [TaskController::class, 'create']);
+// Route::post('/task', [TaskController::class, 'store']);
+// Route::get('/task/{id}', [TaskController::class, 'show']);
+// Route::get('/task/{id}/edit', [TaskController::class, 'edit']);
+// Route::put('/task/{id}', [TaskController::class, 'update']);
+// Route::delete('/task/{id}', [TaskController::class, 'destroy']);
+
+// 커맨드로 컨트롤러 생성 : php artisan make:controller 컨트롤러명 --resource
+// Route::resource('/task', TaskController::class);
+//GET|HEAD        task .................... task.index › TaskController@index
+//POST            task .................... task.store › TaskController@store
+//GET|HEAD        task/create ............. task.create › TaskController@create
+//GET|HEAD        task/{task} ............. task.show › TaskController@show
+//PUT|PATCH       task/{task} ............. task.update › TaskController@update
+//DELETE          task/{task} ............. task.destroy › TaskController@destroy
+//GET|HEAD        task/{task}/edit ........ task.edit › TaskController@edit
+
+// only([]) : 사용할 액션 지정
+// Route::resource('/task', TaskController::class)->only(['index', 'create']);
+//GET|HEAD        task .................... task.index › TaskController@index
+//GET|HEAD        task/create ............. task.create › TaskController@create
+
+// except([]) : 사용하지 않을 액션 지정
+Route::resource('/task', TaskController::class)->except(['index', 'create']);
+//POST            task .................... task.store › TaskController@store
+//GET|HEAD        task/{task} ............. task.show › TaskController@show
+//PUT|PATCH       task/{task} ............. task.update › TaskController@update
+//DELETE          task/{task} ............. task.destroy › TaskController@destroy
+//GET|HEAD        task/{task}/edit ........ task.edit › TaskController@edit
+
+
+// ------------------
+// 블레이드 템플릿용
+// ------------------
+Route::get('/edu', function() {
+    return view('edu')
+            ->with('data', ['name' => '홍길동', 'content' => "<script>alert('tt')</script>"]);
+});
+
+Route::get('/boards', function() {
+    return view('board');
+});
+
+Route::get('/extends', function() {
+    $result = [
+        ['id' => 1, 'name' => '홍길동', 'gender' => 'C']
+        ,['id' => 2, 'name' => '갑순이', 'gender' => 'F']
+        ,['id' => 3, 'name' => '갑돌이', 'gender' => 'M']
+    ];
+
+    return view('extends')
+            ->with('data', $result)
+            ->with('data2', []);
+});
+Route::get('/extends2', function() {
+    return view('extends2');
+});
+
+// --------------------
+// 쿼리빌더 연습용
+// --------------------
+Route::get('/query', [QueryController::class, 'index']);
