@@ -24,5 +24,8 @@ Route::get('/login', [UserController::class, 'goLogin'])->name('goLogin');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+Route::get('/registration', [UserController::class, 'registration'])->name('get.registration');
+Route::post('/registration', [UserController::class, 'storeRegistration'])->name('post.registration');
+
 // 게시판 관련
-Route::resource('/boards', BoardController::class)->except(['update', 'edit']);
+Route::middleware('auth')->resource('/boards', BoardController::class)->except(['update', 'edit']);

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -64,6 +66,57 @@ class UserController extends Controller
 
         Session::invalidate(); // 기존 세션의 모든데이터 제거 및 새로운 세션 ID 발급
         Session::regenerateToken(); // CSRF 토큰 재발급
+
+        return redirect()->route('goLogin');
+    }
+
+    /**
+     * 회원가입 페이지로 이동 처리
+     */
+    public function registration() {
+        return view('registration');
+    }
+
+    /**
+     * 회원가입 처리
+     */
+    public function storeRegistration(Request $request) {
+        // 유효성 체크
+        $validator = Validator::make(
+            $request->only('u_email', 'u_password', 'u_password_chk', 'u_name')
+            ,[
+                'u_email' => ['required', 'email', 'unique:users,u_email']
+                ,'u_password' => ['required', 'between:6,20', 'regex:/^[a-zA-Z0-9!@]+$/']
+                ,'u_password_chk' => ['same:u_password']
+                ,'u_name' => ['required', 'between:2,50', 'regex:/^[가-힣]+$/u']
+            ]
+        );
+
+        if($validator->fails()) {
+            return redirect()
+                    ->route('get.registration')
+                    ->withErrors($validator->errors())
+                    ->withInput();
+        }
+
+        // 회원 정보 삽입
+        // $user = new User();
+        // $user->u_email = $request->u_email;
+        // $user->u_password = Hash::make($request->u_password);
+        // $user->u_name = $request->u_name;
+        // $user->save();
+
+        try {
+            DB::beginTransaction();
+            User::create([
+                'u_email' => $request->u_email
+                ,'u_password' => Hash::make($request->u_password)
+                ,'u_name' => $request->u_name
+            ]);
+            DB::commit();
+        } catch(Throwable $th) {
+            DB::rollBack();
+        }
 
         return redirect()->route('goLogin');
     }
