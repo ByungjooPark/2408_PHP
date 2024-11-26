@@ -1,20 +1,8 @@
 <template>
     <!-- 리스트 -->
     <div class="board-list-box">
-        <div @click="openModal" class="item">
-            <img src="/img/meerkat0.png">
-        </div>
-        <div @click="openModal" class="item">
-            <img src="/img/meerkat1.png">
-        </div>
-        <div @click="openModal" class="item">
-            <img src="/img/meerkat2.png">
-        </div>
-        <div @click="openModal" class="item">
-            <img src="/img/meerkat3.png">
-        </div>
-        <div @click="openModal" class="item">
-            <img src="/img/meerkat4.png">
+        <div v-for="item in boardList" :key="item" @click="openModal" class="item">
+            <img :src="item.img">
         </div>
     </div>
 
@@ -34,7 +22,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+// 보드리스트
+const boardList = computed(() => store.state.board.boardList);
+
+// 비포 마운트 처리
+onBeforeMount(() => {
+    if(store.state.board.boardList.length < 1) {
+        store.dispatch('board/getBoardListPagenation');
+    }
+});
 
 // ------------------------------
 // 모달 관련
