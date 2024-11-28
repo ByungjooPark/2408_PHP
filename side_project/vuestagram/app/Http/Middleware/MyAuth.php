@@ -18,8 +18,6 @@ class MyAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        Log::debug('MyAuth : '.$request->bearerToken());
-
         MyToken::chkToken($request->bearerToken());
 
         return $next($request);

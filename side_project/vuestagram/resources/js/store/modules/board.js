@@ -74,21 +74,26 @@ export default {
          * @param {int} id
          */
         showBoard(context, id) {
-            const url = '/api/boards/' + id;
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            context.dispatch(
+                'user/chkTokenAndContinueProcess'
+                ,() => {
+                    const url = '/api/boards/' + id;
+                    const config = {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                        }
+                    }
+        
+                    axios.get(url, config)
+                    .then(response => {
+                        context.commit('board/setBoardDetail', response.data.board, {root: true});
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
                 }
-            }
-
-            axios.get(url, config)
-            .then(response => {
-                context.commit('setBoardDetail', response.data.board);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-
+                , {root: true}
+            );
         },
         /**
          * 게시글 작성

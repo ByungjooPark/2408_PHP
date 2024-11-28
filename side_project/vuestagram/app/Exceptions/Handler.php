@@ -96,5 +96,4 @@ class Handler extends ExceptionHandler
             'E99' => ['status' => 500, 'msg' => '시스템 에러가 발생했습니다.'],
         ];
     }
-
 }

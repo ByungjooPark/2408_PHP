@@ -6,7 +6,6 @@ use App\Exceptions\MyAuthException;
 use MyEncrypt;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use PDOException;
 
 class MyToken {
@@ -55,7 +54,6 @@ class MyToken {
      * @return  bool true
      */
     public function chkToken(string|null $token) {
-        Log::debug("*************** chkToken Start ***************");
         // 토큰 존재 유무 체크
         if(empty($token)) {
             throw new MyAuthException('E20');
@@ -73,7 +71,6 @@ class MyToken {
             throw new MyAuthException('E21');
         }
         
-        Log::debug("*************** chkToken End ***************");
         return true;
     }
 
